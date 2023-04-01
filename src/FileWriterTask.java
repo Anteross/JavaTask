@@ -22,12 +22,9 @@ public class FileWriterTask implements Runnable{
             while (true) {
                 synchronized (buffer) {
                     while (buffer.size() == 0 || buffer.peek() == null) {
-                        if (buffer.peek() != null && buffer.peek() == Main.EOF) {
-                            break;
-                        }
                         buffer.wait();
                     }
-                    if (buffer.peek() == Main.EOF) {
+                    if (buffer.peek() != null && buffer.peek() == Main.EOF) {
                         break;
                     }
                     char character = buffer.poll();
