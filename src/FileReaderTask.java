@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.Queue;
 public class FileReaderTask implements Runnable {
+
+    private final static int END_OF_STREAM = -1;
     private final Queue<Character> buffer;
     private final String inputFile;
 
@@ -17,21 +19,21 @@ public class FileReaderTask implements Runnable {
     @Override
     public void run() {
         try (FileReader reader = new FileReader(inputFile)) {
-            int c;
+            int character;
             while (true) {
                 synchronized (buffer) {
                     while (buffer.size() >= Main.MAX_BUFFER_LENGTH) {
                         buffer.wait();
                     }
-                    c = reader.read();
-                    if (c == -1) {
+                    character = reader.read();
+                    if (character == END_OF_STREAM) {
                         buffer.offer(Main.EOF);
                     } else {
-                        //System.out.println("read char: " + (char) c);
-                        buffer.offer((char) c);
+                        //System.out.println("read char: " + (char) character);
+                        buffer.offer((char) character);
                     }
                     buffer.notifyAll();
-                    if (c == -1) {
+                    if (character == END_OF_STREAM) {
                         break;
                     }
                 }

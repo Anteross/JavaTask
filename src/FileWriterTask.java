@@ -30,9 +30,9 @@ public class FileWriterTask implements Runnable{
                     if (buffer.peek() == Main.EOF) {
                         break;
                     }
-                    char c = buffer.poll();
-                    //System.out.println("wrote char: " + c);
-                    writer.write(c);
+                    char character = buffer.poll();
+                    //System.out.println("wrote char: " + character);
+                    writer.write(character);
                     buffer.notifyAll();
                 }
             }
